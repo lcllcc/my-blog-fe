@@ -4,16 +4,29 @@
   import { ref } from 'vue'
   import { MdEditor } from 'md-editor-v3';
   import 'md-editor-v3/lib/style.css';
+  import http from '../http.js'
+  import { ElMessage } from 'element-plus'
+
 
   const text = ref('# Hello Editor');
+  const params = new URLSearchParams(new URL(window.location.href).search);
+  const articleId = params.get('articleId')
 
   const onSave = (v: any, h: any) => {
-    // TODO 保存v到数据库
     console.log(v);
-
-    h.then((html: any) => {
-        console.log(html);
-    });
+    http.post('/article', {
+        id: articleId,
+        title: '标题',
+        content: v,
+        coverImage: '封面图片'
+    }).then(res => {
+        ElMessage({
+                message: '保存成功',
+                type: 'success',
+            })
+    }).catch(err => {
+        ElMessage.error(error.msg)
+    })
   };
 
 </script>

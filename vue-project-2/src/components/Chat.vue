@@ -2,16 +2,18 @@
 import {
     Promotion, Loading
 } from '@element-plus/icons-vue'
-import { fa } from 'element-plus/es/locale/index.mjs';
-import { ref } from 'vue'
+import { ref, toRef } from 'vue'
 
+const props = defineProps(['username'])
+console.log('props:', props)
+console.log('username:', props.username)
 const query = ref('')
 const isThinking = ref(false)
 const chatLogList = ref(
     [
         {
             "id": 1,
-            "content": "欢迎回来！我是你的助手小A，你可以问我任何问题😄",
+            "content": props.username + "你好！我是你的助手小A，你可以问我任何问题😄",
             "isMe": false
         }
     ]

@@ -31,10 +31,11 @@ const genHref = (bookId: number) => {
       <el-header>
         <NoLoginHeader></NoLoginHeader>
       </el-header>
+      <el-container style="background-color: aliceblue;">
       <el-main>
         <el-row justify="center" class="card-item">
           <el-col :span="22">
-            <el-card>
+            <el-card shadow="hover">
             <el-row justify="center">
               <h2>热点文章</h2>
             </el-row>
@@ -51,7 +52,7 @@ const genHref = (bookId: number) => {
         </el-row>
         <el-row justify="center">
           <el-col :span="22">
-            <el-card>
+            <el-card shadow="hover">
             <el-row justify="center">
               <h2>达人榜</h2>
             </el-row>
@@ -79,6 +80,7 @@ const genHref = (bookId: number) => {
       <el-footer>
         <Footer></Footer>
       </el-footer>
+    </el-container>
     </el-container>
   </div>
 </template>

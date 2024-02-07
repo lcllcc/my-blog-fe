@@ -18,7 +18,7 @@ export default defineConfig({
     proxy: {
       // /api打头的请求会被代理到target指定的host，并且整个请求path会按照rewrite规则重写
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://localhost:9999',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

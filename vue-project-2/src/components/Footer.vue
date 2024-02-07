@@ -2,7 +2,7 @@
 
 </script>
 <template>
-    <div>
+    <div style="margin-top: 40px;">
         <el-row justify="center" align="middle" :gutter="20">
             <el-col :span="4">
                 <el-avatar size="small" style="margin-right: 10px;">LOGO</el-avatar>

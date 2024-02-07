@@ -4,9 +4,7 @@
     import type { FormInstance, FormRules } from 'element-plus'
     import NoLoginHeader from '../components/NoLoginHeader.vue'
     import { ElMessage } from 'element-plus'
-    import axios from 'axios';
-
-    const host = 'http://localhost:9999'
+    import http from '../http.js';
 
     // 状态
     const active = ref(0)
@@ -20,12 +18,12 @@
         // 模拟接口请求耗时
         // 例子：发送GET请求
         // 例子：发送POST请求
-      axios.post('/api/email/send/code', { 
-        email: ruleForm.email 
+      http.post('/register/send/code', { 
+        email: ruleForm.email
       })
-        .then(response => {
+      .then(response => {
           // 请求完成后
-          console.log(response.data);
+          console.log(response);
           hasSendEmail.value=true
             ElMessage({
                 message: '验证码发送成功',
@@ -130,12 +128,19 @@ const register = async (formEl: FormInstance | undefined) => {
     if (valid) {
         submitLoding.value = true
         // TODO 调用接口注册
-        setTimeout(() => {
-            active.value++
-            setTimeout(() => {
+        http.post('/register/regist', {
+          email: ruleForm.email,
+          password: ruleForm.password,
+          code: ruleForm.code
+        }).then(res => {
+          console.log(res);
+          active.value++
+          setTimeout(() => {
                 window.location.href = '/login'
-            }, 1500)
-        }, 2000)
+            }, 2000)
+        }).catch(err => {
+          ElMessage.error(err.msg)
+        })
     } else {
       console.log('error submit!', fields)
     }
@@ -147,10 +152,7 @@ const next = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
         if (active.value++ > 3) active.value = 0
-        // TODO 调用接口登录
-        // window.location.href = '/login'
     } else {
-        
       console.log('error submit!', fields)
     }
   })
@@ -171,7 +173,7 @@ const next = async (formEl: FormInstance | undefined) => {
                 <el-steps direction="vertical" :active="active" finish-status="success">
                 <el-step title="填写邮箱和密码" />
                 <el-step title="发送邮件接收验证码" />
-                <el-step title="创建账号成功" />
+                <el-step title="填写验证码创建账号" />
             </el-steps>
             </el-col>
             <el-col :span="12">
@@ -201,7 +203,12 @@ const next = async (formEl: FormInstance | undefined) => {
                 </el-form-item>
                 <el-form-item id="submit">
                     <el-button v-if="active==2" type="primary" :loading="submitLoding" @click="register(ruleFormRef)">提交</el-button>
-                    <el-button v-if="active==3" type="success" disabled>已提交，即将跳转...</el-button>
+                    <el-result
+                      v-show="active==3"
+                      icon="success"
+                      title="注册成功"
+                      sub-title="即将跳转去登录..."
+                    ></el-result>
                     <el-button v-if="active<1" @click="next(ruleFormRef)">下一步</el-button>
                 </el-form-item>
             </el-form>

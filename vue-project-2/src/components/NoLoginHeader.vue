@@ -1,5 +1,5 @@
 <template>
-    <el-row :gutter=10 align="middle" style="padding-bottom: 10px;">
+    <el-row :gutter=10 align="middle" style="padding-bottom: 20px;">
       <el-col :span="4" :offset="1">
         <el-link href="/" :underline="false">
             <el-avatar :size="40" src="../assets/myLogo.png"> LOGO </el-avatar>

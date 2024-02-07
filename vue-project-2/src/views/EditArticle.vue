@@ -8,15 +8,23 @@
   import { ElMessage } from 'element-plus'
 
 
-  const text = ref('# Hello Editor');
+  const text = ref('# 标题');
+  const title = ref('');
   const params = new URLSearchParams(new URL(window.location.href).search);
   const articleId = params.get('articleId')
+
+  if(articleId){
+    http.get('/article/' + articleId).then(res => {
+        text.value = res.data.content
+        title.value = res.data.title
+    })
+  }
 
   const onSave = (v: any, h: any) => {
     console.log(v);
     http.post('/article', {
         id: articleId,
-        title: '标题',
+        title: v.split('\n')[0].replace(/^#/, '').trim(),
         content: v,
         coverImage: '封面图片'
     }).then(res => {
@@ -25,7 +33,7 @@
                 type: 'success',
             })
     }).catch(err => {
-        ElMessage.error(error.msg)
+        ElMessage.error(err.msg)
     })
   };
 

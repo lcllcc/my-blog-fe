@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Edit, Menu, SwitchButton, Sunrise, User } from '@element-plus/icons-vue'
+import { Edit, Menu, SwitchButton, Sunrise, User, House } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import http from '../http.js';
 import { ElMessage } from 'element-plus'
@@ -29,10 +29,14 @@ const logout = () => {
         fullscreenLoading.value = false
     })
 }
+
+const myProfile = () => {
+    window.location.href='/profile'
+}
 </script>
 <template>
     <div>
-    <el-row align="middle" style="padding-bottom: 10px;">
+    <el-row align="middle" style="padding-bottom: 20px;">
         <el-col :span="4" :offset="1">
         <div class="block">
             <el-link :underline="false" href="/">
@@ -45,7 +49,8 @@ const logout = () => {
             </el-link>
         </el-col>
         <el-col :span="1">
-            <el-button :icon="Sunrise" size="large" link/>
+            <el-link :underline="false" href="/dashboard" :icon="House">
+            </el-link>
         </el-col>
         <el-col :span="1">
             <el-button :icon="Menu" size="large" @click="drawer = true" link />
@@ -60,7 +65,7 @@ const logout = () => {
     :before-close="handleClose"
     >
         <el-row class="operate-item">
-            <el-button :icon="User" link > 我的信息 </el-button>
+            <el-button :icon="User" link @click="myProfile()"> 我的信息 </el-button>
         </el-row>
         <el-row >
             <el-button type="danger" :icon="SwitchButton" link @click="logout" v-loading.fullscreen.lock="fullscreenLoading"> 退出登录 </el-button>

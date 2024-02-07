@@ -69,6 +69,21 @@ const http = {
         reject(error.response.data)
       })
     })
+  },
+  delete(url='',params={}){
+    return new Promise((resolve, reject) => {
+      _axios({
+        url,
+        data:params,
+        headers:{'Content-Type': 'application/json;charset=UTF-8'},
+        method: 'DELETE'
+      }).then(res => {
+        resolve(res.data)
+        return res
+      }).catch(error => {
+        reject(error.response.data)
+      })
+    })
   }
 }
 

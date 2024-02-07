@@ -1,9 +1,11 @@
 <script setup lang="ts">
   import Header from '../components/Header.vue'
   import Footer from '../components/Footer.vue'
-  import type { Lollipop, Star, Use } from '@element-plus/icons-vue';
+  import { type Lollipop, type Star, type Delete, DeleteFilled } from '@element-plus/icons-vue';
   import http from '../http.js'
   import { ref } from 'vue'
+  import { ElMessage } from 'element-plus'
+
 
   const number = ref(0)
   const size = ref(30)
@@ -21,8 +23,21 @@
         window.open("/article?articleId=" + articleId)
   }
 
-  const getEditArticleUrl = (articleId?: number) => {
-        return "/edit?articleId=" + articleId
+  const deleteArticle = (articleId?: number) => {
+        http.delete('/article/' + articleId).then((res) => {
+          ElMessage({
+                message: res.msg,
+                type: 'success',
+            })
+          for (let i = 0; i < articles.value.length; i++) {
+              if (articles.value[i].id === articleId) {
+                articles.value.splice(i, 1);
+                  break; // 找到并删除对象后，退出循环
+              }
+          }
+        }).catch((err) => {
+          ElMessage.error(err.msg)
+        })
   }
 
   const articles = ref<Article[]>([
@@ -85,7 +100,21 @@
                                     </el-col>
                                     <el-col :span="18">
                                         <el-row justify="center">
+                                          <el-col :span="12" style="text-align: right;">
                                             <el-text class="mx-1"><h3>{{article.title}}</h3></el-text>
+                                          </el-col>
+                                          <el-col :span="12" style="text-align: right;">
+                                            <el-popconfirm 
+                                              title="确定删除吗?"
+                                              confirm-button-text="确定"
+                                              cancel-button-text="取消"
+                                              @confirm="deleteArticle(article.id)"
+                                            >
+                                              <template #reference>
+                                                <el-icon @click.stop class="hover-effect" ><Delete /></el-icon>
+                                              </template>
+                                            </el-popconfirm>
+                                          </el-col>
                                         </el-row>
                                         <el-row>
                                             <el-text class="mx-1" type="info">{{article.description}}</el-text>
@@ -123,5 +152,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.hover-effect:hover {
+  /* 在悬停时更改图标样式 */
+  color: red;
+  /* 或者您也可以使用其他样式，比如改变大小等 */
 }
 </style>

@@ -19,6 +19,8 @@
     const gotoArticle = () => {
         window.location.href="/edit?articleId=" + props.articleId
     }
+
+    
 </script>
 <template>
     <div>

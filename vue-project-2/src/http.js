@@ -30,7 +30,7 @@ _axios.interceptors.response.use(
     console.log('error', err)
     if(err.response.status == 401){
       // 未登录
-      localStorage.removeItem('isLoggedIn');
+      sessionStorage.removeItem('isLoggedIn');
       window.location.href = '/'
     }else{
       return Promise.reject(err);

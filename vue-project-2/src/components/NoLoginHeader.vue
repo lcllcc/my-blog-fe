@@ -27,7 +27,7 @@ import { ref } from 'vue'
 
 // 判断用户是否已登录
 const hasLogin = ref(false)
-  if(localStorage.getItem('isLoggedIn') === 'true'){
+  if(sessionStorage.getItem('isLoggedIn') === 'true'){
     console.log('已登录!')
     hasLogin.value = true
   }

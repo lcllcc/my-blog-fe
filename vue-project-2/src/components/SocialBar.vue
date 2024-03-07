@@ -25,25 +25,28 @@
 <template>
     <div>
         <el-row justify="center" :gutter="20">
-            <el-col :span="8" @click="gotoArticle()">
-                <el-link v-show="isOwner">
+            <el-row>
+                <el-link v-show="isOwner"  @click="gotoArticle()">
                     <el-icon size="large"><Edit /></el-icon>
                 </el-link>
-            </el-col>
-            <el-col :span="8">
+            </el-row>
+            <el-row>
                 <el-link :underline="false" @click="doStar">
                     <el-icon size="large"  v-if="hasStar"><StarFilled /></el-icon>
                     <el-icon size="large"  v-else><Star /></el-icon>
                 </el-link>
-            </el-col>
-            <el-col :span="8">
+            </el-row>
+            <el-row>
                 <el-link @click="doComment">
                     <el-icon><ChatLineSquare /></el-icon>
                 </el-link>
-            </el-col>
+            </el-row>
         </el-row>
     </div>
 </template>
 
 <style scoped>
+.el-row {
+  margin-bottom: 20px;
+}
 </style>

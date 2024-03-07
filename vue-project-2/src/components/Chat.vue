@@ -5,11 +5,15 @@ import {
 import { ref } from 'vue'
 import { MdPreview } from 'md-editor-v3';
 import 'md-editor-v3/lib/preview.css';
+import showMessage from './widget/message.js'
+import initWidget from './widget/index.js'
+import './widget/waifu.css'
 
 const scrollElement = document.documentElement
 const props = defineProps(['username', 'userId'])
 const query = ref('')
 const answer = ref('')
+// 当前对话在对话记录数组中的索引
 const index = ref(0)
 const isThinking = ref(false)
 const chatLogList = ref(
@@ -45,19 +49,17 @@ const initWs = () => {
     }
 
     socket.value.onmessage = (event) => {
-        console.log("onmessage", event);
         if(event.data == "ON_COMPLETE" || event.data == "ON_ERROR"){
             console.log("完整的消息：", answer.value)
             thinkingOver()
         }else{
             answer.value = answer.value + event.data
             chatLogList.value[index.value].content = answer.value
+            showMessage(answer.value, 10000, 10)
         }
     }
     console.log("注册事件函数完成");
 }
-initWs()
-
 
 const sendQeury = () => {
     // websocket对话
@@ -90,6 +92,41 @@ const sendQeury = () => {
     }
 }
 
+// 初始化
+// initWs()
+
+const live2d_path = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+// const live2d_path = "/Users/liuchanglei/Documents/工作/项目/my/my-blog-fe/vue-project-2/src/components/widget/";
+initWidget({
+      wsApiPath: "ws://localhost:9999/chat/" + props.userId,
+      waifuPath: live2d_path + "waifu-tips.json",
+      apiPath: "https://live2d.fghrsh.net/api/",
+    //   cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+      tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+});
+
+console.log(`
+  く__,.ヘヽ.        /  ,ー､ 〉
+           ＼ ', !-─‐-i  /  /´
+           ／｀ｰ'       L/／｀ヽ､
+         /   ／,   /|   ,   ,       ',
+       ｲ   / /-‐/  ｉ  L_ ﾊ ヽ!   i
+        ﾚ ﾍ 7ｲ｀ﾄ   ﾚ'ｧ-ﾄ､!ハ|   |
+          !,/7 '0'     ´0iソ|    |
+          |.从"    _     ,,,, / |./    |
+          ﾚ'| i＞.､,,__  _,.イ /   .i   |
+            ﾚ'| | / k_７_/ﾚ'ヽ,  ﾊ.  |
+              | |/i 〈|/   i  ,.ﾍ |  i  |
+             .|/ /  ｉ：    ﾍ!    ＼  |
+              kヽ>､ﾊ    _,.ﾍ､    /､!
+              !'〈//｀Ｔ´', ＼ ｀'7'ｰr'
+              ﾚ'ヽL__|___i,___,ンﾚ|ノ
+                  ﾄ-,/  |___./
+                  'ｰ'    !_,.:
+
+    加载liv2D完毕！
+`);
+
 </script>
 <template>
     <div>
@@ -103,10 +140,6 @@ const sendQeury = () => {
                     <el-col :span="20">
                             <MdPreview v-show="chatLog.content" :editorId="chatLog.role + idx" :modelValue="chatLog.content" />
                             <el-icon class="is-loading"><MoreFilled v-show="isThinking && idx==index" /></el-icon>
-                        <!-- <el-card class="chat-bot">
-                            <span>{{chatLog.content}}</span>
-                            <el-icon class="is-loading"><MoreFilled v-show="isThinking && idx==index" /></el-icon>
-                        </el-card> -->
                     </el-col>
                 </el-row>
                 <el-row justify="end" class="chat-log" :gutter="10" v-else>
@@ -118,24 +151,14 @@ const sendQeury = () => {
                     </el-col>
                 </el-row>
             </div>
-            <!-- 思考部分 -->
-            <!-- <div v-if = "isThinking">
-                <el-row justify="start" class="chat-log" :gutter="10">
-                    <el-col :span="2">
-                        <el-avatar>小A</el-avatar>
-                    </el-col>
-                    <el-col :span="20">
-                        <el-button link :loading-icon="Loading" loading></el-button>
-                    </el-col>
-                </el-row>
-            </div> -->
+        
             <!-- 输入部分 -->
             <el-row justify="center" :gutter="20">
                 <el-col :span="16">
                     <el-input placeholder="任何问题..." v-model="query" type="textarea" autosize />
                 </el-col>
                 <el-col :span="1">
-                    <el-button :icon="Promotion" :disable="!isThinking" circle @click = "sendQeury"/>
+                    <el-button :icon="Promotion" :disable="!isThinking" circle @click = "sendQeury" @keyup.ctrl.enter="sendQeury"/>
                 </el-col>
             </el-row>
         </el-main>

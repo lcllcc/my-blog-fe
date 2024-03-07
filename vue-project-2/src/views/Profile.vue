@@ -7,25 +7,6 @@
       <el-container style="background-color: aliceblue;">
           <el-main>
             <el-row justify="center">
-                <div class="container" v-show="false">
-                    <el-card>
-                        <el-form
-                        label-width="auto"
-                        :model="userInfo"
-                        style="max-width: 460px; min-width: 300px;"
-                    >
-                        <el-form-item label="昵称">
-                        <el-input v-model="userInfo.username" />
-                        </el-form-item>
-                        <el-form-item label="邮箱">
-                        <el-input v-model="userInfo.email" disabled />
-                        </el-form-item>
-                        <el-form-item>
-                            
-                        </el-form-item>
-                        </el-form>
-                    </el-card>
-                </div>
                 <div class="container">
                     <el-descriptions
                         style="width: 600px;"
@@ -36,8 +17,9 @@
                         border
                     >
                         <el-descriptions-item label="用户名">{{userInfo.username}}</el-descriptions-item>
-                        <el-descriptions-item label="邮箱">{{userInfo.email}}</el-descriptions-item>
-                        <el-descriptions-item label="头像" :span="2"> </el-descriptions-item>
+                        <el-descriptions-item label="头像" > </el-descriptions-item>
+                        <el-descriptions-item label="邮箱" :span="2">{{userInfo.email}}</el-descriptions-item>
+                        <el-descriptions-item label="余额" >{{userInfo.amount }} </el-descriptions-item>
                         <el-descriptions-item label="心情">
                         <el-tag size="small">{{mood}}</el-tag>
                         </el-descriptions-item>
@@ -57,8 +39,9 @@
                         border
                     >
                         <el-descriptions-item label="用户名"><el-input v-model="userInfo.username"></el-input></el-descriptions-item>
-                        <el-descriptions-item label="邮箱">{{userInfo.email}}</el-descriptions-item>
-                        <el-descriptions-item label="头像" :span="2"><el-input></el-input> </el-descriptions-item>
+                        <el-descriptions-item label="头像" ><el-input></el-input> </el-descriptions-item>
+                        <el-descriptions-item label="邮箱" :span="2">{{userInfo.email}}</el-descriptions-item>
+                        <el-descriptions-item label="余额" >{{userInfo.amount }} </el-descriptions-item>
                         <el-descriptions-item label="心情">
                             <el-input v-model="mood"></el-input>
                         </el-descriptions-item>
@@ -103,6 +86,7 @@ interface User {
     articleNum?: number
     followerNum?: number
     starNum?: number
+    amount?: number
   }
 const userInfo = ref<User>({})
 http.get('/user')

@@ -6,20 +6,27 @@
       </el-header>
       <el-container style="background-color: aliceblue;">
         <el-aside width="200px">
-            <el-row justify="center" style="padding-top: 40px;">
+            <!-- <el-row class="catalog" justify="center" style="padding-top: 40px;">
                 <el-col :span="20">
-                  <MdCatalog :editorId="id" :scrollElement="scrollElement" />
+                  <el-affix target=".catalog">
+                    <MdCatalog :editorId="id" :scrollElement="scrollElement" />
+                  </el-affix>
                 </el-col>
-            </el-row>
+            </el-row> -->
+            <el-affix :offset="100">
+                    <MdCatalog :editorId="id" :scrollElement="scrollElement" />
+            </el-affix>
         </el-aside>
         <el-container>
           <el-main>
-            <el-row justify="end">
-                <SocialBar v-if="userId && userInfo" :articleId="articleId" :isOwner="userId==userInfo.id"></SocialBar>
-            </el-row>
-            <div>
-                <MdPreview :editorId="id" :modelValue="text" style="min-height: 600px;"/>
-            </div>
+              <el-row justify="end">
+                <el-affix :offset="100">
+                  <SocialBar v-if="userId && userInfo" :articleId="articleId" :isOwner="userId==userInfo.id"></SocialBar>
+                </el-affix>
+              </el-row>
+            <el-col :span="23">
+              <MdPreview :editorId="id" :modelValue="text" style="min-height: 600px;"/>
+            </el-col>
           </el-main>
           <el-footer>
             <MyFooter></MyFooter>

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-
-  const host = 'http://localhost:9999'
 </script>
 
 <template>

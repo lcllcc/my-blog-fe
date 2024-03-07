@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Edit, Menu, SwitchButton, Sunrise, User, House } from '@element-plus/icons-vue'
+import { Edit, Menu, SwitchButton, Coin, User, House } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import http from '../http.js';
 import { ElMessage } from 'element-plus'
@@ -21,7 +21,7 @@ const logout = () => {
     fullscreenLoading.value = true
     http.post('/logout').then(data => {
         console.log("logout succeed")
-        localStorage.removeItem('isLoggedIn')
+        sessionStorage.removeItem('isLoggedIn')
         window.location.href="/"
     }).catch(err => {
         ElMessage.error(err.msg)
@@ -32,6 +32,10 @@ const logout = () => {
 
 const myProfile = () => {
     window.location.href='/profile'
+}
+
+const finance = () => {
+    window.location.href='/finance'
 }
 </script>
 <template>
@@ -53,7 +57,7 @@ const myProfile = () => {
             </el-link>
         </el-col>
         <el-col :span="1">
-            <el-button :icon="Menu" size="large" @click="drawer = true" link />
+            <el-link :underline="false" :icon="Menu" @click="drawer = true"></el-link>
         </el-col>
     </el-row>
     <div style="width: 100%; height: 0; border-top: 1px solid var(--el-border-color);"/>
@@ -66,6 +70,9 @@ const myProfile = () => {
     >
         <el-row class="operate-item">
             <el-button :icon="User" link @click="myProfile()"> 我的信息 </el-button>
+        </el-row>
+        <el-row class="operate-item">
+            <el-button :icon="Coin" link @click="finance()"> 兑换余额 </el-button>
         </el-row>
         <el-row >
             <el-button type="danger" :icon="SwitchButton" link @click="logout" v-loading.fullscreen.lock="fullscreenLoading"> 退出登录 </el-button>

@@ -92,7 +92,7 @@ const login = async (formEl: FormInstance | undefined) => {
           // 请求完成后
           console.log("success response:", data);
           errMsg.value = ''
-          localStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('isLoggedIn', 'true');
           window.location.href = '/Dashboard'
         })
         .catch(error => {

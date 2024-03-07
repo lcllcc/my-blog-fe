@@ -31,11 +31,11 @@
 
 <template>
   <div v-loading.fullscreen.lock="fullscreenLoading">
-  <el-container>
+  <el-container key="1">
       <el-header>
         <Header></Header>
       </el-header>
-      <el-container style="background-color: aliceblue;">
+      <el-container style="background-color: aliceblue;" key="2">
         <el-aside width="200px" style="border-right: 1px solid var(--el-border-color)">
             <el-row justify="center">
               <el-col :span="16">
@@ -64,30 +64,18 @@
                 <el-statistic title="粉丝数" :value="userInfo.followerNum" />
               </el-link>
             </el-row>
-            <!-- <el-row justify="start" style="margin-top: 20px; padding-left: 20px;">
-                <el-col :span="10">
-                    <el-link :underline="false">粉丝数<el-icon><Lollipop /></el-icon></el-link>
-                    <el-statistic :value="userInfo.followerNum" />
-                </el-col>
-            </el-row>
-            <el-row justify="start" style="margin-top: 20px; padding-left: 20px;">
-                <el-row>
-                  <el-link :underline="false">星星数<el-icon><Star /></el-icon></el-link>
-                </el-row>
-                <el-row>
-                  <el-statistic :value="userInfo.starNum" />
-                </el-row>
-            </el-row> -->
             </el-col>
             </el-row>
         </el-aside>
         <el-main>
-        <el-row class="row-bg" justify="center">
-          <el-col :span="20">
-            <!-- 父子组件是异步渲染，需要保证数据到了后再渲染子组件 -->
-            <Chat v-if="userInfo.username" :username="userInfo.username" :userId="userInfo.id"></Chat>
-          </el-col>
-        </el-row>
+          <el-row class="row-bg" justify="center">
+            <el-col :span="20">
+              <!-- 父子组件是异步渲染，需要保证数据到了后再渲染子组件 -->
+              <div v-if="userInfo.username">
+                <Chat :username="userInfo.username" :userId="userInfo.id"/>
+              </div>
+            </el-col>
+          </el-row>
         <el-footer>
         <Footer></Footer>
       </el-footer>

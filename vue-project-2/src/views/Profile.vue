@@ -1,3 +1,47 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import http from '../http.js';
+
+import MyHeader from '../components/Header.vue'
+import MyFooter from '../components/Footer.vue'
+import { ElMessage } from 'element-plus'
+import {type User} from '../model'
+
+
+const editing = ref(false)
+const mood = ref("开心")
+const userInfo = ref<User>({})
+http.get('/user')
+    .then(res => {
+      // 请求完成后
+      console.log(res.data);
+      userInfo.value = res.data
+    })
+    .catch(err => {
+      // 处理错误
+      console.error('Error posting data:', err);
+    })
+    .finally(() => {
+      // 无论失败还是成功都需要执行的步骤
+    });
+
+const submit = () => {
+    console.log("userInfo", userInfo)
+    http.post('/user', {
+        "id": userInfo.value.id,
+        "username": userInfo.value.username
+    }).then(res => {
+        ElMessage({
+                message: res.msg,
+                type: 'success',
+            })
+        editing.value = false
+    }).catch(err => {
+        ElMessage.error(err.msg)
+    })
+}
+</script>
+
 <template>
     <div class="common-layout">
     <el-container>
@@ -67,58 +111,6 @@
     </el-container>
   </div>
 </template>
-  
-<script setup lang="ts">
-import { ref } from 'vue';
-import http from '../http.js';
-
-import MyHeader from '../components/Header.vue'
-import MyFooter from '../components/Footer.vue'
-import { ElMessage } from 'element-plus'
-
-const editing = ref(false)
-const mood = ref("开心")
-
-interface User {
-    username?: string
-    id?: number
-    email?: string
-    articleNum?: number
-    followerNum?: number
-    starNum?: number
-    amount?: number
-  }
-const userInfo = ref<User>({})
-http.get('/user')
-    .then(res => {
-      // 请求完成后
-      console.log(res.data);
-      userInfo.value = res.data
-    })
-    .catch(err => {
-      // 处理错误
-      console.error('Error posting data:', err);
-    })
-    .finally(() => {
-      // 无论失败还是成功都需要执行的步骤
-    });
-
-const submit = () => {
-    console.log("userInfo", userInfo)
-    http.post('/user', {
-        "id": userInfo.value.id,
-        "username": userInfo.value.username
-    }).then(res => {
-        ElMessage({
-                message: res.msg,
-                type: 'success',
-            })
-        editing.value = false
-    }).catch(err => {
-        ElMessage.error(err.msg)
-    })
-}
-</script>
 
 <style>
 .container {

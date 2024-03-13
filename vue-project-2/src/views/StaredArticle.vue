@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import Header from '../components/Header.vue'
   import Footer from '../components/Footer.vue'
-  import { type Lollipop, type Star, type Delete, DeleteFilled } from '@element-plus/icons-vue';
   import http from '../http.js'
   import { ref } from 'vue'
   import { ElMessage } from 'element-plus'
@@ -13,6 +12,7 @@
   const totalElements = ref(0)
 
   const fullscreenLoading = ref(true)
+  
 
   const gotoArticle = (articleId?: number) => {
         window.open("/article?articleId=" + articleId)
@@ -38,8 +38,8 @@
   const articles = ref<Article[]>([
   ])
 
-  // 获取用户信息
-  const load = () => {http.get('/article/owned', {
+  // 获取收藏信息
+  const load = () => {http.get('/article/stared', {
     page: number.value,
     size: size.value,
     keyword: null
@@ -71,7 +71,7 @@
                 <el-card shadow="never" class="box-card">
                     <template #header>
                         <div class="card-header">
-                            <span>我的文章</span>
+                            <span>我的收藏</span>
                         </div>
                     </template>
                     <div class="card-body" v-if="articles.length > 0">
@@ -83,21 +83,12 @@
                                     </el-col>
                                     <el-col :span="18">
                                         <el-row justify="center">
-                                          <el-col :span="12" style="text-align: right;">
+                                          <el-col :span="24" style="text-align: center;">
                                             <el-text class="mx-1"><h3>{{article.title}}</h3></el-text>
                                           </el-col>
-                                          <el-col :span="12" style="text-align: right;">
-                                            <el-popconfirm 
-                                              title="确定删除吗?"
-                                              confirm-button-text="确定"
-                                              cancel-button-text="取消"
-                                              @confirm="deleteArticle(article.id)"
-                                            >
-                                              <template #reference>
-                                                <el-icon @click.stop class="hover-effect" ><Delete /></el-icon>
-                                              </template>
-                                            </el-popconfirm>
-                                          </el-col>
+                                        </el-row>
+                                        <el-row justify="center">
+                                          <el-text class="mx-1">{{article.username}}</el-text>
                                         </el-row>
                                         <el-row>
                                             <el-text class="mx-1" type="info">{{article.description}}</el-text>

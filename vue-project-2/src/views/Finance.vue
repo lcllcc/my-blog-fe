@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import http from '../http.js';
+
+import MyHeader from '../components/Header.vue'
+import MyFooter from '../components/Footer.vue'
+import { ElMessage } from 'element-plus'
+
+// 兑换码
+const code = ref("")
+
+// 兑换
+const redeem = (code) => {
+  http.post('/redeem-code/redeem', {
+    code: code
+  }).then((res) => {
+    ElMessage.success(res.msg)
+  }).catch((err) => {
+    ElMessage.error(err.msg)
+  })
+}
+
+</script>
+
 <template>
     <div class="common-layout">
     <el-container>
@@ -8,9 +32,8 @@
           <el-main>
             <el-row justify="center">
                 <div class="container" v-show="true">
-                    <el-form-item label="邮箱">
-                        <el-input v-model="code" disabled />
-                    </el-form-item>
+                  <el-input class="redeem-item" v-model="code" style="width: 240px" placeholder="请输入兑换码" />
+                  <el-button class="redeem-item" type="primary" @click="redeem(code)">兑换</el-button>
                 </div>
             </el-row>
           </el-main>
@@ -21,21 +44,13 @@
     </el-container>
   </div>
 </template>
-  
-<script setup lang="ts">
-import { ref } from 'vue';
-import http from '../http.js';
-
-import MyHeader from '../components/Header.vue'
-import MyFooter from '../components/Footer.vue'
-import { ElMessage } from 'element-plus'
-
-const code = ref("")
-
-</script>
 
 <style>
 .container {
     min-height: 600px;
+}
+
+.redeem-item {
+  margin: 20px 10px;
 }
 </style>

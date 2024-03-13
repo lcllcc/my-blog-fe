@@ -2,19 +2,13 @@
   import Header from '../components/Header.vue'
   import Chat from '../components/Chat.vue'
   import Footer from '../components/Footer.vue'
-  import type { Lollipop, Star, User } from '@element-plus/icons-vue';
+  import type { Lollipop, Star } from '@element-plus/icons-vue';
   import http from '../http.js'
   import { ref } from 'vue'
+  import {type User} from '../model'
 
   const fullscreenLoading = ref(true)
-  interface User {
-    username?: string
-    id?: number
-    email?: string
-    articleNum?: number
-    followerNum?: number
-    starNum?: number
-  }
+ 
 
   const userInfo = ref<User>({})
   // 获取用户信息

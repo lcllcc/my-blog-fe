@@ -6,9 +6,11 @@
   import 'md-editor-v3/lib/style.css';
   import http from '../http.js'
   import { ElMessage } from 'element-plus'
+  import { useRouter } from 'vue-router';
 
+  const router = useRouter();
 
-  const text = ref('# 标题');
+  const text = ref('');
   const title = ref('');
   const params = new URLSearchParams(new URL(window.location.href).search);
   const articleId = params.get('articleId')
@@ -21,10 +23,13 @@
   }
 
   const onSave = (v: any, h: any) => {
-    console.log(v);
+    if(!title.value){
+        ElMessage.error('请输入标题')
+        return;
+    }
     http.post('/article', {
         id: articleId,
-        title: v.split('\n')[0].replace(/^#/, '').trim(),
+        title: title.value,
         content: v,
         coverImage: '封面图片'
     }).then(res => {
@@ -37,6 +42,7 @@
     })
   };
 
+
 </script>
 
 
@@ -47,7 +53,19 @@
                 <Header></Header>
             </el-header>
             <el-main>
-                <div style="min-height: 600px;">
+                <div class="article-title">
+                    <el-row style="margin-bottom: 10px;">
+                        <el-col :span="21">
+                            <el-input  v-model="title" placeholder="请输入标题" style="font-size: larger; font-weight: bolder;">
+                            </el-input>
+                        </el-col>
+                        <el-col :span="3" style="text-align: end;">
+                            <el-button type="primary" @click="onSave(text, '')">提交</el-button>
+                            <el-button @click="router.back()" >取消</el-button>
+                        </el-col>
+                    </el-row>
+                </div>
+                <div class="article-content" style="min-height: 800px;">
                     <el-row justify="center">
                         <MdEditor v-model="text" @onSave="onSave"  />
                     </el-row>
@@ -59,3 +77,6 @@
         </el-container>
     </div>
 </template>
+
+<style scoped>
+</style>

@@ -30,34 +30,32 @@ const router = createRouter({
     {
       path: '/edit',
       name: 'edit',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/EditArticle.vue')
     },
     {
       path: '/article',
       name: 'article',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/Article.vue')
     },
     {
       path: '/article/owned',
       name: 'owned-article',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/OwnedArticle.vue')
+    },
+    {
+      path: '/article/stared',
+      name: 'stared-article',
+      component: () => import('../views/StaredArticle.vue')
     },
     {
       path: '/profile',
       name: 'profile',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/Profile.vue')
+    },
+    {
+      path: '/finance',
+      name: 'finance',
+      component: () => import('../views/Finance.vue')
     }
   ]
 })

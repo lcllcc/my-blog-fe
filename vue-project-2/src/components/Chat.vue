@@ -63,7 +63,10 @@ const initWs = () => {
 
 const sendQeury = () => {
     // websocket对话
-    console.log("发送消息")
+    if(query.value == ''){
+        return;
+    }
+    
     isThinking.value = true
     chatLogList.value.push(
         {
@@ -80,7 +83,6 @@ const sendQeury = () => {
         )
         index.value = index.value + 2
         socket.value.send(JSON.stringify(chatLogList.value.slice(-5, -1)));
-        console.log("发送完毕")
     }else{
         chatLogList.value.push(
             {
@@ -93,7 +95,7 @@ const sendQeury = () => {
 }
 
 // 初始化
-// initWs()
+initWs()
 
 const live2d_path = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
 // const live2d_path = "/Users/liuchanglei/Documents/工作/项目/my/my-blog-fe/vue-project-2/src/components/widget/";
@@ -155,10 +157,10 @@ console.log(`
             <!-- 输入部分 -->
             <el-row justify="center" :gutter="20">
                 <el-col :span="16">
-                    <el-input placeholder="任何问题..." v-model="query" type="textarea" autosize />
+                    <el-input placeholder="任何问题..." v-model="query" type="textarea" autosize @keyup.ctrl.enter="sendQeury" />
                 </el-col>
                 <el-col :span="1">
-                    <el-button :icon="Promotion" :disable="!isThinking" circle @click = "sendQeury" @keyup.ctrl.enter="sendQeury"/>
+                    <el-button id="chat-send-button" title="ctrl+enter" :icon="Promotion" :disabled="isThinking||query==''" circle @click = "sendQeury"/>
                 </el-col>
             </el-row>
         </el-main>

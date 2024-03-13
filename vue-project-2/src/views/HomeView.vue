@@ -1,28 +1,34 @@
 <script setup lang="ts">
 import NoLoginHeader from '../components/NoLoginHeader.vue'
 import Footer from '../components/Footer.vue'
+import http from '../http.js'
+import { ref } from 'vue'
+import {type Article} from '../model'
 
-const books = [
-  {
-    id: 1,
-    url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-  },
-  {
-    id: 2,
-    url: 'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg', 
-  },
-  {
-    id: 3,
-    url: 'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg', 
-  },
-  {
-    id: 4,
-    url: 'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg', 
+const books = ref<Article[]>([
+])
+
+const pageNumber = ref(0)
+const pageSize = ref(5)
+
+// 查询热门书籍
+const loadHotArticles = (pageNumber, pageSize) => {http.get('/article/hot', {
+    page: pageNumber,
+    size: pageSize,
+    keyword: null
+  }).then(res => {
+    books.value = res.data.content
+  }).catch(err => {
+    
+  }).finally(() => {
+    
+  })}
+
+const gotoArticle = (articleId?: number) => {
+        window.open("/article?articleId=" + articleId)
   }
-]
-const genHref = (bookId: number) => {
-  return "/article?articleId=" + bookId
-}
+
+loadHotArticles(pageNumber.value, pageSize.value)
 </script>
 
 <template>
@@ -34,46 +40,56 @@ const genHref = (bookId: number) => {
       <el-container style="background-color: aliceblue;">
       <el-main>
         <el-row justify="center" class="card-item">
-          <el-col :span="22">
-            <el-card shadow="hover">
-            <el-row justify="center">
-              <h2>热点文章</h2>
-            </el-row>
-            <el-carousel :interval="4000" type="card" height="300px">
-            <el-carousel-item v-for="book in books" :key="book.id">
-              <!-- <h3 text="2xl" justify="center">{{ item }}</h3> -->
-              <el-link :href="genHref(book.id)" target="blank" >
-                <el-image :src="book.url" fit="fill" />
-              </el-link>
-            </el-carousel-item>
-          </el-carousel>
+          <el-col :span="23">
+            <el-card shadow="never">
+              <template #header>
+                  <div class="card-header">
+                      <span>热点文章</span>
+                  </div>
+              </template>
+              <div class="card-body">
+                <el-carousel :interval="4000" type="card" height="300px">
+                  <el-carousel-item v-for="book in books" :key="book.id"  @click="gotoArticle(book.id)">
+                    <el-image :src="book.coverImage" fit="fill" />
+                      <span>{{book.title}}</span>
+                  </el-carousel-item>
+                </el-carousel>
+              </div>
         </el-card>
           </el-col>
         </el-row>
         <el-row justify="center">
-          <el-col :span="22">
-            <el-card shadow="hover">
-            <el-row justify="center">
-              <h2>达人榜</h2>
-            </el-row>
-            <el-row :gutter=20>
-              <el-col :span="8">
-                <el-card>
-                  <span>小明</span>
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card>
-                  <span>小帅</span>
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card>
-                  <span>小美</span>
-                </el-card>
-              </el-col>
-            </el-row>
-        </el-card>
+          <el-col :span="23">
+            <el-card shadow="never">
+              <template #header>
+                  <div class="card-header">
+                      <span>为你推荐</span>
+                  </div>
+              </template>
+              <div class="card-body" v-if="books.length > 0">
+                <el-card shadow="hover" class="box-card-item" v-for="article in books" :key="article.id" @click="gotoArticle(article.id)">
+                                <el-row justify="center">
+                                    <el-col :span="6">
+                                        <el-image style="height: 150px; width: 220px; border-radius: 10px;" :src="article.coverImage" fit="cover" >
+                                        </el-image>
+                                    </el-col>
+                                    <el-col :span="18">
+                                        <el-row justify="center">
+                                          <el-col :span="24" style="text-align: center;">
+                                            <el-text class="mx-1"><h3>{{article.title}}</h3></el-text>
+                                          </el-col>
+                                        </el-row>
+                                        <el-row justify="center">
+                                          <el-text class="mx-1">{{article.username}}</el-text>
+                                        </el-row>
+                                        <el-row>
+                                            <el-text class="mx-1" type="info">{{article.description}}</el-text>
+                                        </el-row>
+                                    </el-col>
+                                </el-row>
+                            </el-card>
+              </div>
+            </el-card>
           </el-col>
         </el-row>
       </el-main>
@@ -109,5 +125,11 @@ const genHref = (bookId: number) => {
 
 .main-body {
   background-image: '/Users/liuchanglei/Documents/工作/项目/my/my-blog-fe/vue-project-2/src/assets/bg1.png';
+}
+
+.box-card-item {
+  margin-bottom: 20px;
+  cursor: pointer;
+  background-color: #F0F2F5;
 }
 </style>

@@ -1,46 +1,3 @@
-<template>
-    <div class="common-layout">
-    <el-container>
-      <el-header>
-        <NoLoginHeader></NoLoginHeader>
-      </el-header>
-      <el-main style="min-height: 550px;">
-        <el-row justify="center">
-            <el-row :span="12" style="margin-top: 60px;">
-                <el-card>
-                <el-form :model="ruleForm"
-                         ref="ruleFormRef"
-                         :rules="rules"
-                         style="width: 500px" 
-                         size="large"
-                         status-icon>
-                    <h3>登录</h3>
-                    <el-form-item prop="email">
-                        <el-input v-model="ruleForm.email" placeholder="邮箱"/>
-                    </el-form-item>
-                    <el-form-item prop="password">
-                        <el-input v-model="ruleForm.password" type = "password" placeholder="密码" />
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" style="width: 100%;" :loading="logining" @click="login(ruleFormRef)">登录</el-button>
-                    </el-form-item>
-                    <el-alert v-show="errMsg" :title="errMsg" type="error" :closable="false" />
-                </el-form>
-            </el-card>
-            </el-row>
-        </el-row>
-      </el-main>
-      <el-footer>
-        <Footer></Footer>
-      </el-footer>
-    </el-container>
-  </div>
-  </template>
-  
-  <style>
-  
-  </style>
-
 <script setup lang="ts">
 import NoLoginHeader from '../components/NoLoginHeader.vue'
 import Footer from '../components/Footer.vue'
@@ -109,4 +66,47 @@ const login = async (formEl: FormInstance | undefined) => {
   })
 }
 </script>
+
+<template>
+    <div class="common-layout">
+    <el-container>
+      <el-header>
+        <NoLoginHeader></NoLoginHeader>
+      </el-header>
+      <el-main style="min-height: 550px;">
+        <el-row justify="center">
+            <el-row :span="12" style="margin-top: 60px;">
+                <el-card>
+                <el-form :model="ruleForm"
+                         ref="ruleFormRef"
+                         :rules="rules"
+                         style="width: 500px" 
+                         size="large"
+                         status-icon>
+                    <h3>登录</h3>
+                    <el-form-item prop="email">
+                        <el-input v-model="ruleForm.email" placeholder="邮箱"/>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                        <el-input v-model="ruleForm.password" type = "password" placeholder="密码" />
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" style="width: 100%;" :loading="logining" @click="login(ruleFormRef)">登录</el-button>
+                    </el-form-item>
+                    <el-alert v-show="errMsg" :title="errMsg" type="error" :closable="false" />
+                </el-form>
+            </el-card>
+            </el-row>
+        </el-row>
+      </el-main>
+      <el-footer>
+        <Footer></Footer>
+      </el-footer>
+    </el-container>
+  </div>
+  </template>
+  
+  <style>
+  
+  </style>
   

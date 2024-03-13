@@ -1,5 +1,7 @@
 <template>
-    <el-row :gutter=10 align="middle" style="padding-bottom: 20px;">
+  <div class="header-container">
+    <el-affix>
+      <el-row :gutter=10 align="middle" style="padding-bottom: 20px;">
       <el-col :span="4" :offset="1">
         <el-link href="/" :underline="false">
             <el-avatar :size="40" src="../assets/myLogo.png"> LOGO </el-avatar>
@@ -18,9 +20,11 @@
             注册
           </el-link>
       </el-col>
-    </el-row>
-  <div style="width: 100%; height: 0; border-top: 1px solid var(--el-border-color);"/>
-</template>
+      </el-row>
+      <div style="width: 100%; height: 0; border-top: 1px solid var(--el-border-color);"/>
+    </el-affix>
+  </div>
+ </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
@@ -32,3 +36,9 @@ const hasLogin = ref(false)
     hasLogin.value = true
   }
 </script>
+
+<style>
+  .header-container {
+    background-color: #FAFCFF;
+  }
+</style>

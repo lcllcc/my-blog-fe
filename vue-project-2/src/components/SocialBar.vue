@@ -4,7 +4,6 @@
     import http from '../http.js'
 
     const hasStar = ref(false)
-    const hasFavorite = ref(false)
     const props = defineProps(['articleId', 'isOwner'])
     console.log(props)
     const isOwner = props.isOwner
@@ -50,23 +49,21 @@
 </script>
 <template>
     <div>
-        <el-row justify="center" :gutter="20">
-            <el-row>
-                <el-link v-show="isOwner"  @click="gotoArticle()">
-                    <el-icon size="large"><Edit /></el-icon>
-                </el-link>
-            </el-row>
-            <el-row>
-                <el-link :underline="false" @click="doStar">
-                    <el-icon size="large"  v-if="hasStar"><StarFilled /></el-icon>
-                    <el-icon size="large"  v-else><Star /></el-icon>
-                </el-link>
-            </el-row>
-            <el-row>
-                <el-link @click="doComment">
-                    <el-icon><ChatLineSquare /></el-icon>
-                </el-link>
-            </el-row>
+        <el-row>
+            <el-link v-show="isOwner" :underline="false" @click="gotoArticle()">
+                <el-icon size="large"><Edit /></el-icon>
+            </el-link>
+        </el-row>
+        <el-row>
+            <el-link :underline="false" @click="doStar">
+                <el-icon size="large" color="#eebe77" v-if="hasStar"><StarFilled /></el-icon>
+                <el-icon size="large"   v-else><Star /></el-icon>
+            </el-link>
+        </el-row>
+        <el-row>
+            <el-link :underline="false" @click="doComment">
+                <el-icon size="large"><ChatLineSquare /></el-icon>
+            </el-link>
         </el-row>
     </div>
 </template>

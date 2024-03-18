@@ -14,8 +14,8 @@
   const fullscreenLoading = ref(true)
   
 
-  const gotoArticle = (articleId?: number) => {
-        window.open("/article?articleId=" + articleId)
+  const gotoArticle = (articleId?: number, title?: string) => {
+        window.location.href="/article?articleId=" + articleId + "&title=" + title
   }
 
   const deleteArticle = (articleId?: number) => {
@@ -75,13 +75,23 @@
                         </div>
                     </template>
                     <div class="card-body" v-if="articles.length > 0">
-                      <el-card shadow="hover" class="box-card-item" v-for="article in articles" :key="article.id" @click="gotoArticle(article.id)">
+                      <el-card shadow="hover" class="box-card-item" v-for="article in articles" :key="article.id" @click="gotoArticle(article.id, article.title)">
                                 <el-row justify="center">
                                     <el-col :span="6">
                                         <el-image style="height: 150px; width: 220px; border-radius: 10px;" :src="article.coverImage" fit="cover" >
                                         </el-image>
                                     </el-col>
                                     <el-col :span="18">
+                                        <el-row justify="end">
+                                          <el-col :span="1">
+                                            <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.starNum }}</el-text>
+                                            <el-icon color="#eebe77"><Star /></el-icon>
+                                          </el-col>
+                                          <el-col :span="1">
+                                            <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.viewNum }}</el-text>
+                                            <el-icon color="#b1b3b8"><View /></el-icon>
+                                          </el-col>
+                                        </el-row>
                                         <el-row justify="center">
                                           <el-col :span="24" style="text-align: center;">
                                             <el-text class="mx-1"><h3>{{article.title}}</h3></el-text>

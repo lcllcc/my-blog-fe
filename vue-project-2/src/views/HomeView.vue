@@ -5,30 +5,46 @@ import http from '../http.js'
 import { ref } from 'vue'
 import {type Article} from '../model'
 
-const books = ref<Article[]>([
+const hotArticles = ref<Article[]>([
+])
+
+const newestArticles = ref<Article[]>([
 ])
 
 const pageNumber = ref(0)
-const pageSize = ref(5)
+const pageSize = ref(10)
 
 // 查询热门书籍
-const loadHotArticles = (pageNumber, pageSize) => {http.get('/article/hot', {
-    page: pageNumber,
-    size: pageSize,
+const loadHotArticles = () => {http.get('/article/hot', {
+    page: 0,
+    size: 5,
     keyword: null
   }).then(res => {
-    books.value = res.data.content
+    hotArticles.value = res.data.content
   }).catch(err => {
     
   }).finally(() => {
     
   })}
 
-const gotoArticle = (articleId?: number) => {
-        window.open("/article?articleId=" + articleId)
+  const loadNewestArticles = (pageNumber, pageSize) => {http.get('/article/newest', {
+    page: pageNumber,
+    size: pageSize,
+    keyword: null
+  }).then(res => {
+    newestArticles.value = res.data.content
+  }).catch(err => {
+    
+  }).finally(() => {
+    
+  })}
+
+const gotoArticle = (articleId?: number, title?: string) => {
+        window.open("/article?articleId=" + articleId + "&title=" + title)
   }
 
-loadHotArticles(pageNumber.value, pageSize.value)
+loadHotArticles()
+loadNewestArticles(pageNumber.value, pageSize.value)
 </script>
 
 <template>
@@ -49,9 +65,23 @@ loadHotArticles(pageNumber.value, pageSize.value)
               </template>
               <div class="card-body">
                 <el-carousel :interval="4000" type="card" height="300px">
-                  <el-carousel-item v-for="book in books" :key="book.id"  @click="gotoArticle(book.id)">
-                    <el-image :src="book.coverImage" fit="fill" />
+                  <el-carousel-item v-for="book in hotArticles" :key="book.id"  @click="gotoArticle(book.id, book.title)">
+                    
+                    <!-- <el-row justify="end">
+                      <el-col :span="2">
+                        <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ book.starNum }}</el-text>
+                        <el-icon color="#eebe77"><Star /></el-icon>
+                      </el-col>
+                      <el-col :span="2">
+                        <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ book.viewNum }}</el-text>
+                        <el-icon color="#b1b3b8"><View /></el-icon>
+                      </el-col>
+                    </el-row>
+                    <el-row justify="center">
                       <span>{{book.title}}</span>
+                    </el-row> -->
+                    <el-image src="../../public/银魂头像1.png" fit="cover" style="height: 300px; width: 650px;" />
+                    
                   </el-carousel-item>
                 </el-carousel>
               </div>
@@ -66,14 +96,24 @@ loadHotArticles(pageNumber.value, pageSize.value)
                       <span>为你推荐</span>
                   </div>
               </template>
-              <div class="card-body" v-if="books.length > 0">
-                <el-card shadow="hover" class="box-card-item" v-for="article in books" :key="article.id" @click="gotoArticle(article.id)">
+              <div class="card-body" v-if="newestArticles.length > 0">
+                <el-card shadow="hover" class="box-card-item" v-for="article in newestArticles" :key="article.id" @click="gotoArticle(article.id, article.title)">
                                 <el-row justify="center">
                                     <el-col :span="6">
-                                        <el-image style="height: 150px; width: 220px; border-radius: 10px;" :src="article.coverImage" fit="cover" >
+                                        <el-image style="height: 150px; width: 220px; border-radius: 10px;" src="../../public/银魂头像1.png" fit="cover" >
                                         </el-image>
                                     </el-col>
                                     <el-col :span="18">
+                                        <el-row justify="end">
+                                          <el-col :span="1">
+                                            <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.starNum }}</el-text>
+                                            <el-icon color="#eebe77"><Star /></el-icon>
+                                          </el-col>
+                                          <el-col :span="1">
+                                            <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.viewNum }}</el-text>
+                                            <el-icon color="#b1b3b8"><View /></el-icon>
+                                          </el-col>
+                                        </el-row>
                                         <el-row justify="center">
                                           <el-col :span="24" style="text-align: center;">
                                             <el-text class="mx-1"><h3>{{article.title}}</h3></el-text>
@@ -130,6 +170,5 @@ loadHotArticles(pageNumber.value, pageSize.value)
 .box-card-item {
   margin-bottom: 20px;
   cursor: pointer;
-  background-color: #F0F2F5;
 }
 </style>

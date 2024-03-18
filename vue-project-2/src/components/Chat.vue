@@ -100,34 +100,35 @@ initWs()
 const live2d_path = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
 // const live2d_path = "/Users/liuchanglei/Documents/工作/项目/my/my-blog-fe/vue-project-2/src/components/widget/";
 initWidget({
-      wsApiPath: "ws://localhost:9999/chat/" + props.userId,
-      waifuPath: live2d_path + "waifu-tips.json",
-      apiPath: "https://live2d.fghrsh.net/api/",
+    wsApiPath: "ws://localhost:9999/chat/" + props.userId,
+    waifuPath: live2d_path + "waifu-tips.json",
+    apiPath: "https://live2d.fghrsh.net/api/",
     //   cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
-      tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
 });
 
 console.log(`
-  く__,.ヘヽ.        /  ,ー､ 〉
-           ＼ ', !-─‐-i  /  /´
-           ／｀ｰ'       L/／｀ヽ､
-         /   ／,   /|   ,   ,       ',
-       ｲ   / /-‐/  ｉ  L_ ﾊ ヽ!   i
+く__,.ヘヽ.        /  ,ー､ 〉
+        ＼ ', !-─‐-i  /  /´
+        ／｀ｰ'       L/／｀ヽ､
+        /   ／,   /|   ,   ,       ',
+    ｲ   / /-‐/  ｉ  L_ ﾊ ヽ!   i
         ﾚ ﾍ 7ｲ｀ﾄ   ﾚ'ｧ-ﾄ､!ハ|   |
-          !,/7 '0'     ´0iソ|    |
-          |.从"    _     ,,,, / |./    |
-          ﾚ'| i＞.､,,__  _,.イ /   .i   |
+        !,/7 '0'     ´0iソ|    |
+        |.从"    _     ,,,, / |./    |
+        ﾚ'| i＞.､,,__  _,.イ /   .i   |
             ﾚ'| | / k_７_/ﾚ'ヽ,  ﾊ.  |
-              | |/i 〈|/   i  ,.ﾍ |  i  |
-             .|/ /  ｉ：    ﾍ!    ＼  |
-              kヽ>､ﾊ    _,.ﾍ､    /､!
-              !'〈//｀Ｔ´', ＼ ｀'7'ｰr'
-              ﾚ'ヽL__|___i,___,ンﾚ|ノ
-                  ﾄ-,/  |___./
-                  'ｰ'    !_,.:
+            | |/i 〈|/   i  ,.ﾍ |  i  |
+            .|/ /  ｉ：    ﾍ!    ＼  |
+            kヽ>､ﾊ    _,.ﾍ､    /､!
+            !'〈//｀Ｔ´', ＼ ｀'7'ｰr'
+            ﾚ'ヽL__|___i,___,ンﾚ|ノ
+                ﾄ-,/  |___./
+                'ｰ'    !_,.:
 
     加载liv2D完毕！
 `);
+
 
 </script>
 <template>
@@ -157,7 +158,7 @@ console.log(`
             <!-- 输入部分 -->
             <el-row justify="center" :gutter="20">
                 <el-col :span="16">
-                    <el-input placeholder="任何问题..." v-model="query" type="textarea" autosize @keyup.ctrl.enter="sendQeury" />
+                    <el-input placeholder="ctrl+enter发送问题" v-model="query" type="textarea" autosize @keyup.ctrl.enter="sendQeury" />
                 </el-col>
                 <el-col :span="1">
                     <el-button id="chat-send-button" title="ctrl+enter" :icon="Promotion" :disabled="isThinking||query==''" circle @click = "sendQeury"/>

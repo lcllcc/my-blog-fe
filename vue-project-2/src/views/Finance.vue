@@ -34,6 +34,9 @@ const redeem = (code) => {
                 <div class="container" v-show="true">
                   <el-input class="redeem-item" v-model="code" style="width: 240px" placeholder="请输入兑换码" />
                   <el-button class="redeem-item" type="primary" @click="redeem(code)">兑换</el-button>
+                  <el-row justify="center">
+                    <el-text class="mx-1" type="info">获取兑换码请微信联系：</el-text><el-text class="mx-1" type="primary">helloliuchanglei</el-text>
+                  </el-row>
                 </div>
             </el-row>
           </el-main>

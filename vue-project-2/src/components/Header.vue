@@ -44,7 +44,7 @@ const myStar = () => {
 </script>
 <template>
     <div class="header-container">
-        <el-affix>
+        <el-affix class="header-affix">
             <el-row align="middle" style="margin-bottom: 20px;">
             <el-col :span="4" :offset="1">
             <div class="block">
@@ -54,7 +54,7 @@ const myStar = () => {
             </div>
             </el-col> 
                 <el-col :span="1" :offset="15">
-                    <el-link class="header-navi" :underline="false" href="/edit" target="_blank" :icon="CirclePlusFilled">
+                    <el-link class="header-navi" :underline="false" href="/edit" :icon="CirclePlusFilled">
                     </el-link>
                 </el-col>
                 <el-col :span="1">
@@ -77,10 +77,10 @@ const myStar = () => {
                     <el-button :icon="User" link @click="myProfile()"> 我的信息 </el-button>
                 </el-row>
                 <el-row class="operate-item">
-                    <el-button :icon="Coin" link @click="finance()"> 兑换余额 </el-button>
+                    <el-button type="primary" :icon="Coin" link @click="finance()"> 兑换余额 </el-button>
                 </el-row>
                 <el-row class="operate-item">
-                    <el-button :icon="Star" link @click="myStar()"> 我的收藏 </el-button>
+                    <el-button type="warning" :icon="Star" link @click="myStar()"> 我的收藏 </el-button>
                 </el-row>
                 <el-row >
                     <el-button type="danger" :icon="SwitchButton" link @click="logout" v-loading.fullscreen.lock="fullscreenLoading"> 退出登录 </el-button>
@@ -94,10 +94,10 @@ const myStar = () => {
 .operate-item {
     margin-bottom: 20px;
 }
-.header-container {
-    background-color: #FAFCFF;
-}
 .header-navi {
     font-size: large;
+}
+.header-affix {
+    background-color: #FAFAFA;
 }
 </style>

@@ -39,6 +39,6 @@ const hasLogin = ref(false)
 
 <style>
   .header-container {
-    background-color: #FAFCFF;
+    background-color: #FAFAFA;
   }
 </style>

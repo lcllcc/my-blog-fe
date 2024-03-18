@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import Header from '../components/Header.vue'
   import Footer from '../components/Footer.vue'
-  import { type Lollipop, type Star, type Delete, DeleteFilled } from '@element-plus/icons-vue';
+  import { type Star, type Delete } from '@element-plus/icons-vue';
   import http from '../http.js'
   import { ref } from 'vue'
   import { ElMessage } from 'element-plus'
@@ -15,7 +15,7 @@
   const fullscreenLoading = ref(true)
 
   const gotoArticle = (articleId?: number) => {
-        window.open("/article?articleId=" + articleId)
+        window.location.href = "/article?articleId=" + articleId
   }
 
   const deleteArticle = (articleId?: number) => {
@@ -82,22 +82,35 @@
                                         </el-image>
                                     </el-col>
                                     <el-col :span="18">
-                                        <el-row justify="center">
-                                          <el-col :span="12" style="text-align: right;">
-                                            <el-text class="mx-1"><h3>{{article.title}}</h3></el-text>
+                                        <el-row justify="end">
+                                          <el-col :span="20" style="text-align: left;">
+                                            <el-icon color="#409EFF" v-if="article.status=='PROTECT'"><Umbrella /></el-icon>
+                                            <el-icon color="#E6A23C" v-else-if="article.status=='PRIVATE'"><Lock /></el-icon>
+                                            <el-icon color="#67C23A" v-else><Unlock /></el-icon>
                                           </el-col>
-                                          <el-col :span="12" style="text-align: right;">
+                                          <el-col :span="1">
+                                            <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.starNum }}</el-text>
+                                            <el-icon color="#eebe77"><Star /></el-icon>
+                                          </el-col>
+                                          <el-col :span="1">
+                                            <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.viewNum }}</el-text>
+                                            <el-icon color="#b1b3b8"><View /></el-icon>
+                                          </el-col>
+                                          <el-col :span="2" style="text-align: right;">
                                             <el-popconfirm 
-                                              title="确定删除吗?"
-                                              confirm-button-text="确定"
-                                              cancel-button-text="取消"
-                                              @confirm="deleteArticle(article.id)"
-                                            >
+                                            title="确定删除吗?"
+                                            confirm-button-text="确定"
+                                            cancel-button-text="取消"
+                                            @confirm="deleteArticle(article.id)"
+                                          >
                                               <template #reference>
                                                 <el-icon @click.stop class="hover-effect" ><Delete /></el-icon>
                                               </template>
                                             </el-popconfirm>
                                           </el-col>
+                                        </el-row>
+                                        <el-row justify="center">
+                                          <el-text class="mx-1"><h3>{{article.title}}</h3></el-text>
                                         </el-row>
                                         <el-row>
                                             <el-text class="mx-1" type="info">{{article.description}}</el-text>
@@ -139,7 +152,7 @@
 
 .hover-effect:hover {
   /* 在悬停时更改图标样式 */
-  color: red;
+  color: #F56C6C;
   /* 或者您也可以使用其他样式，比如改变大小等 */
 }
 </style>

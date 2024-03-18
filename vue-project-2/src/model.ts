@@ -5,6 +5,10 @@ export interface Article {
     username?: string
     description?: string
     content?: string
+    status?: string
+    token?: string
+    starNum?: number
+    viewNum?: number
 }
 
 export interface User {

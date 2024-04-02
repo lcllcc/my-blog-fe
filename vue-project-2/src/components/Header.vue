@@ -3,6 +3,7 @@ import { Menu, SwitchButton, Coin, User, HomeFilled, Star, CirclePlusFilled } fr
 import { ref } from 'vue'
 import http from '../http.js';
 import { ElMessage } from 'element-plus'
+import headerLogo from "@/assets/headerLogo.png"
 
 const handleClose = (done: () => void) => {
     done()
@@ -47,9 +48,9 @@ const myStar = () => {
         <el-affix class="header-affix">
             <el-row align="middle" style="margin-bottom: 20px;">
             <el-col :span="4" :offset="1">
-            <div class="block">
+            <div class="logo-contanier">
                 <el-link :underline="false" href="/">
-                    <el-avatar :size="40" src="../assets/myLogo.png"> LOGO </el-avatar>
+                    <el-avatar :size="40" :src="headerLogo"> LOGO </el-avatar>
                 </el-link>
             </div>
             </el-col> 
@@ -92,12 +93,16 @@ const myStar = () => {
 
 <style scoped>
 .operate-item {
-    margin-bottom: 20px;
+    margin-bottom: 1em;
 }
 .header-navi {
     font-size: large;
+    margin-top: 0.5em;
 }
 .header-affix {
     background-color: #FAFAFA;
+}
+.logo-contanier{
+    margin-top: 0.5em;
 }
 </style>

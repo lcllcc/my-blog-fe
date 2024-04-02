@@ -3,27 +3,16 @@
     import { ref } from 'vue'
     import http from '../http.js'
 
-    const hasStar = ref(false)
-    const props = defineProps(['articleId', 'isOwner'])
-    console.log(props)
+    
+    const props = defineProps(['articleId', 'isOwner', 'hasStar'])
     const isOwner = props.isOwner
+    const hasStar = ref(false)
+    hasStar.value = props.hasStar
+    
     const articleId = props.articleId
 
     const doComment = () => {
         console.log("写评论")
-    }
-
-    const getStar = () => {
-        http.get('/article/star/' + articleId)
-            .then(res => {
-                    // 请求完成后
-                    hasStar.value = res.data.hasStar
-            }).catch(err => {
-                // 处理错误
-                console.error('Error posting data:', err);
-            }).finally(() => {
-                // 无论失败还是成功都需要执行的步骤
-            });
     }
 
     const doStar = () => {
@@ -42,9 +31,6 @@
     const gotoArticle = () => {
         window.location.href="/edit?articleId=" + props.articleId
     }
-
-    // 进入页面就请求
-    getStar()
     
 </script>
 <template>

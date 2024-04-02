@@ -22,12 +22,10 @@
   const articleId = params.get('articleId')
 
   if(articleId){
-    http.get('/article/' + articleId).then(res => {
+    http.get('/article/get/' + articleId).then(res => {
         article.value = res.data
     })
   }
-
-  console.log('article', article.value)
 
   const onSubmit = (content: string) => {
     onSave(content, '')

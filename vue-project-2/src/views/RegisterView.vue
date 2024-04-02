@@ -2,9 +2,10 @@
     import { reactive } from 'vue'
     import { ref } from 'vue'
     import type { FormInstance, FormRules } from 'element-plus'
-    import NoLoginHeader from '../components/NoLoginHeader.vue'
+    import NoLoginHeader from '@/components/NoLoginHeader.vue'
     import { ElMessage } from 'element-plus'
     import http from '../http.js';
+    import Footer from '@/components/Footer.vue'
 
     // 状态
     const active = ref(0)
@@ -165,10 +166,9 @@ const next = async (formEl: FormInstance | undefined) => {
     <el-header>
         <NoLoginHeader></NoLoginHeader>
       </el-header>
-      <el-main>
-        <el-row class="row-bg" justify="center"> 
-        </el-row>
-        <el-row class="row-bg" justify="center">
+      <el-main >
+        <div class="register-container">
+        <el-row justify="center">
             <el-col :span="5">
                 <el-steps direction="vertical" :active="active" finish-status="success">
                 <el-step title="填写邮箱和密码" />
@@ -214,6 +214,16 @@ const next = async (formEl: FormInstance | undefined) => {
             </el-form>
             </el-col>
         </el-row>
+      </div>
       </el-main>
+      <el-footer>
+        <Footer></Footer>
+      </el-footer>
     </el-container>
 </template>
+
+<style>
+.register-container {
+  min-height: 38em;
+}
+</style>

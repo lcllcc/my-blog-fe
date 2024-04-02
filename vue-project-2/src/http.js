@@ -1,7 +1,7 @@
-import axios from 'axios'     //引入
+import axios from 'axios'
+import { API_BASE_URL } from "./const";
 
-
-let baseURL = 'http://localhost:5173/api'
+let baseURL = API_BASE_URL + '/api'
  
 let config = {
   baseURL: baseURL,
@@ -31,7 +31,7 @@ _axios.interceptors.response.use(
     if(err.response.status == 401){
       // 未登录
       sessionStorage.removeItem('isLoggedIn');
-      window.location.href = '/'
+      window.location.href = '/login'
     }else{
       return Promise.reject(err);
     }

@@ -14,9 +14,11 @@ import SocialBar from '../components/SocialBar.vue'
 const id = 'preview-only'
 const title = ref("")
 const text = ref("")
-const userId = ref()
+const userId = ref('')
 const status = ref('')
 const token = ref('')
+const hasStar = ref(false)
+const isOwner = ref(false)
 const scrollElement = document.documentElement;
 // 获取url中的参数
 const params = new URLSearchParams(new URL(window.location.href).search);
@@ -25,13 +27,15 @@ title.value = params.get('title')
 
 // 获取文章
 const getArticle = () => {
-  http.get('/article/' + articleId + '?token=' + token.value).then(res => {
+  http.get('/article/get/' + articleId + '?token=' + token.value).then(res => {
       // 请求完成后
-      console.log(res);
       title.value = res.data.title
       text.value = res.data.content
-      userId.value = res.data.userId
       status.value = res.data.status
+      isOwner.value = res.data.isOwner
+      hasStar.value = res.data.hasStar
+      userId.value = res.data.userId
+      console.log('isOwner', isOwner)
     })
     .catch(err => {
       // 处理错误
@@ -48,17 +52,6 @@ const getArticle = () => {
 }
 
 getArticle()
-
-const userInfo = ref<User>()
-// 获取用户信息
-http.get('/user').then(res => {
-  console.log('res data:', res.data)
-  userInfo.value = res.data
-}).catch(err => {
-  
-}).finally(() => {
-
-})
 
 </script>
 <template>
@@ -85,7 +78,7 @@ http.get('/user').then(res => {
                 <el-col :span="2">
                   <el-row justify="center">
                     <el-affix :offset="100">
-                      <SocialBar v-if="userId && userInfo" :articleId="articleId" :isOwner="userId==userInfo.id"></SocialBar>
+                      <SocialBar v-if="userId!=''" :articleId="articleId" :isOwner="isOwner" :hasStar="hasStar"></SocialBar>
                     </el-affix>
                   </el-row>
                 </el-col>

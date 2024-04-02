@@ -5,6 +5,8 @@
   import { ref } from 'vue'
   import { ElMessage } from 'element-plus'
   import {type Article} from '../model'
+  import { StarFilled } from '@element-plus/icons-vue'
+  import defaultArticle from "@/assets/defaultArticle.png"
 
 
   const number = ref(0)
@@ -78,14 +80,14 @@
                       <el-card shadow="hover" class="box-card-item" v-for="article in articles" :key="article.id" @click="gotoArticle(article.id, article.title)">
                                 <el-row justify="center">
                                     <el-col :span="6">
-                                        <el-image style="height: 150px; width: 220px; border-radius: 10px;" :src="article.coverImage" fit="cover" >
+                                        <el-image style="height: 150px; width: 220px; border-radius: 10px;" :src="defaultArticle" fit="cover" >
                                         </el-image>
                                     </el-col>
                                     <el-col :span="18">
                                         <el-row justify="end">
                                           <el-col :span="1">
                                             <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.starNum }}</el-text>
-                                            <el-icon color="#eebe77"><Star /></el-icon>
+                                            <el-icon color="#eebe77"><StarFilled /></el-icon>
                                           </el-col>
                                           <el-col :span="1">
                                             <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.viewNum }}</el-text>

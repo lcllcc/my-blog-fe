@@ -8,6 +8,7 @@ import 'md-editor-v3/lib/preview.css';
 import showMessage from './widget/message.js'
 import initWidget from './widget/index.js'
 import './widget/waifu.css'
+import { WS_BASE_URL } from "../const";
 
 const scrollElement = document.documentElement
 const props = defineProps(['username', 'userId'])
@@ -19,7 +20,7 @@ const isThinking = ref(false)
 const chatLogList = ref(
     [
         {
-            "content": props.username + "你好！我是你的助手小A，你可以问我任何问题😄",
+            "content": props.username + "你好！我是你的助手小六，你可以问我任何问题😄",
             "role": "system"
         }
     ]
@@ -33,8 +34,9 @@ const thinkingOver = () => {
 
 const socket = ref<WebSocket>()
 const initWs = () => {
-    console.log("初始化ws");
-    socket.value = new WebSocket("ws://localhost:9999/chat/" + props.userId);
+    let wsUrl = WS_BASE_URL + "/api/ws/chat/" + props.userId
+    console.log("初始化ws:", wsUrl);
+    socket.value = new WebSocket(wsUrl);
 
     socket.value.onopen = (event) => {
         console.log("onopen", event);
@@ -97,15 +99,15 @@ const sendQeury = () => {
 // 初始化
 initWs()
 
-const live2d_path = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
+// const live2d_path = "https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/";
 // const live2d_path = "/Users/liuchanglei/Documents/工作/项目/my/my-blog-fe/vue-project-2/src/components/widget/";
-initWidget({
-    wsApiPath: "ws://localhost:9999/chat/" + props.userId,
-    waifuPath: live2d_path + "waifu-tips.json",
-    apiPath: "https://live2d.fghrsh.net/api/",
-    //   cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
-    tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
-});
+// initWidget({
+//     wsApiPath: "ws://localhost:9999/chat/" + props.userId,
+//     waifuPath: live2d_path + "waifu-tips.json",
+//     apiPath: "https://live2d.fghrsh.net/api/",
+//     //   cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
+//     tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+// });
 
 console.log(`
 く__,.ヘヽ.        /  ,ー､ 〉
@@ -126,7 +128,7 @@ console.log(`
                 ﾄ-,/  |___./
                 'ｰ'    !_,.:
 
-    加载liv2D完毕！
+    加载完毕！
 `);
 
 
@@ -138,7 +140,7 @@ console.log(`
             <div v-for="(chatLog,idx) in chatLogList" :key="index">
                 <el-row justify="start" class="chat-log" :gutter="10" v-if="chatLog.role != 'user'">
                     <el-col :span="2">
-                        <el-avatar>小A</el-avatar>
+                        <el-avatar>小六</el-avatar>
                     </el-col>
                     <el-col :span="20">
                             <MdPreview v-show="chatLog.content" :editorId="chatLog.role + idx" :modelValue="chatLog.content" />

@@ -19,4 +19,11 @@ export interface User {
     followerNum?: number
     starNum?: number
     amount?: number
+    accountCoin?: AccountCoin
+}
+
+export interface AccountCoin {
+    amountCoin?: number
+    totalCoin?: number
+    usedCoin?: number
 }

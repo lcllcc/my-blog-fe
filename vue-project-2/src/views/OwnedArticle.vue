@@ -1,16 +1,17 @@
 <script setup lang="ts">
   import Header from '../components/Header.vue'
   import Footer from '../components/Footer.vue'
-  import { type Star, type Delete } from '@element-plus/icons-vue';
+  import { type Star, type Delete, StarFilled } from '@element-plus/icons-vue';
   import http from '../http.js'
   import { ref } from 'vue'
   import { ElMessage } from 'element-plus'
   import {type Article} from '../model'
+  import defaultArticle from "@/assets/defaultArticle.png"
 
 
-  const number = ref(0)
-  const size = ref(30)
-  const totalElements = ref(0)
+  const pageNumber = ref(1)
+  const pageSize = ref(5)
+  const pageCounts = ref(0)
 
   const fullscreenLoading = ref(true)
 
@@ -19,7 +20,7 @@
   }
 
   const deleteArticle = (articleId?: number) => {
-        http.delete('/article/' + articleId).then((res) => {
+        http.delete('/article/del/' + articleId).then((res) => {
           ElMessage({
                 message: res.msg,
                 type: 'success',
@@ -38,17 +39,17 @@
   const articles = ref<Article[]>([
   ])
 
-  // 获取用户信息
+  // 获取文章信息
   const load = () => {http.get('/article/owned', {
-    page: number.value,
-    size: size.value,
+    page: pageNumber.value - 1,
+    size: pageSize.value,
     keyword: null
   }).then(res => {
     console.log('res data:', res.data)
     articles.value = res.data.content
-    number.value = res.data.number
-    size.value = res.data.size
-    totalElements.value = res.data.totalElements
+    pageNumber.value = res.data.number + 1
+    pageSize.value = res.data.size
+    pageCounts.value = res.data.totalPages
   }).catch(err => {
     
   }).finally(() => {
@@ -75,10 +76,13 @@
                         </div>
                     </template>
                     <div class="card-body" v-if="articles.length > 0">
+                      <div class="pagination-block">
+                        <el-pagination layout="prev, pager, next" v-model:current-page="pageNumber" v-model:page-size="pageSize" :page-count="pageCounts" @current-change="load" />
+                      </div>
                       <el-card shadow="hover" class="box-card-item" v-for="article in articles" :key="article.id" @click="gotoArticle(article.id)">
                                 <el-row justify="center">
                                     <el-col :span="6">
-                                        <el-image style="height: 150px; width: 220px; border-radius: 10px;" :src="article.coverImage" fit="cover" >
+                                        <el-image style="height: 150px; width: 220px; border-radius: 10px;" :src="defaultArticle" fit="cover" >
                                         </el-image>
                                     </el-col>
                                     <el-col :span="18">
@@ -90,7 +94,7 @@
                                           </el-col>
                                           <el-col :span="1">
                                             <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.starNum }}</el-text>
-                                            <el-icon color="#eebe77"><Star /></el-icon>
+                                            <el-icon color="#eebe77"><StarFilled /></el-icon>
                                           </el-col>
                                           <el-col :span="1">
                                             <el-text type="info" style="vertical-align: 0.125em;margin-right: 0.2em;">{{ article.viewNum }}</el-text>
@@ -154,5 +158,10 @@
   /* 在悬停时更改图标样式 */
   color: #F56C6C;
   /* 或者您也可以使用其他样式，比如改变大小等 */
+}
+
+.pagination-block {
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: flex-end; /* 将子元素靠右对齐 */
 }
 </style>
